@@ -1,0 +1,44 @@
+<?php
+
+namespace humhub\modules\visitor\controllers;
+
+use Yii;
+use humhub\components\Controller;
+
+class EmailController extends Controller
+{
+    public function actionSendEmailFlags($land, $supporter)
+    {
+        $email = 'test@online.net'; // Beliebige E-Mail-Adresse, z. B. interner Verteiler
+
+        $body = "Hallo $supporter,\n\nDieser Text enthält Informationen über das Land: $land.";
+
+
+        Yii::info('Die Funktion actionIndex wurde aufgerufen.', __METHOD__);
+
+        Yii::$app->mailer->compose()
+            ->setTo($email)
+            ->setFrom(['admin@online.net' => 'Visitor Flag Report'])
+            ->setSubject('Visitors reported, please set flags')
+            ->setTextBody($body)
+            ->send();
+
+        // Optional: Füge hier eine Erfolgsmeldung hinzu oder leite den Benutzer weiter
+        Yii::$app->session->setFlash('success', 'E-Mail erfolgreich gesendet.');
+
+
+    }
+
+    
+        public function actionSendTestEmail()
+        {
+            Yii::$app->mailer->compose()
+                ->setTo('volker@klumski.net')
+                ->setFrom(['admin@klumski.net' => 'Test Email'])
+                ->setSubject('Test E-Mail')
+                ->setTextBody('Dies ist ein Test.')
+                ->send();
+            echo "E-Mail gesendet";
+        }
+
+}
